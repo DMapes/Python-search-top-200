@@ -10,7 +10,6 @@ file = askopenfilename()
 file_name = os.path.basename(file)
 
 available_player_list = []
-available_player_list_detailed = []
 
 with open(file, 'r') as transactions:
     csv_reader = csv.DictReader(transactions)
@@ -91,29 +90,22 @@ while input_name:
     print 'Rank|{} Player|{} Team|{} Position|{} Bye|{}'.format(rank, player_name, position, team, bye)
     if player_name in available_player_list:
         print '{} available.'.format(player_name)
-        options = raw_input('(a)Add player to team. (r)remove from team, (d)delete from available.')
+        options = raw_input('(a)Add player to team. (d)delete from available.')
         if options == 'a':
             # new_player = search_player(input_name)
             add_team_player(player_name)
             print '{} added to team.'.format(player_name)
-        if options == 'r':
-            # new_player = search_player(input_name)
-            remove_team_player(player_name)
-            print '{} removed from team.'.format(player_name)
         if options == 'd':
-            # new_player = search_player(input_name)
             available_player_list.remove(player_name)
         continue
     if player_name not in available_player_list:
         print '{} is not available.'.format(player_name)
-        # options = raw_input('(r)remove from team, (a)add to available.')
-        # if options == 'r':
-        #     # new_player = search_player(input_name)
-        #     remove_team_player(player_name)
-        #     print '{} removed from team.'.format(player_name)
-        # if options == 'a':
-        #     # new_player = search_player(input_name)
-        #     available_player_list.append(player_name)
+        options = raw_input('(r)remove from team, (a)add to available.')
+        if options == 'r':
+            remove_team_player(player_name)
+            print '{} removed from team.'.format(player_name)
+        if options == 'a':
+            available_player_list.append(player_name)
 else:
     print 'My Team {}'.format(my_team)
 
