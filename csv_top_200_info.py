@@ -10,13 +10,10 @@ file = askopenfilename()
 file_name = os.path.basename(file)
 
 available_player_list = []
+player_info_list = []
 
 with open(file, 'r') as transactions:
     csv_reader = csv.DictReader(transactions)
-
-    player_info_list = []
-    player_chosen = []
-
     for item in csv_reader:
         rank = item['Rk']
         player = item['Player']
@@ -69,7 +66,7 @@ def top_players(players):
     top_players_list = []
     for name in players:
         rank, player_name, position, team, bye, player_info = search_player(name)
-        info = 'Rank|{}-{} -{} -{} Bye|{}'.format(rank, player_name, position, team, bye)
+        info = '{} - {}-{}-{} Bye|{}'.format(rank, player_name, position, team, bye)
         top_players_list.append(info)
     return top_players_list
 
@@ -85,29 +82,40 @@ input_name = True
 
 while input_name:
     print 'Top 5 available {}'.format(top_players(available_player_list[:5]))
-    input_name = raw_input('Player name : ')
-    rank, player_name, position, team, bye, player_info = search_player(input_name)
-    print 'Rank|{} Player|{} Team|{} Position|{} Bye|{}'.format(rank, player_name, position, team, bye)
-    if player_name in available_player_list:
-        print '{} available.'.format(player_name)
-        options = raw_input('(a)Add player to team. (d)delete from available.')
-        if options == 'a':
-            # new_player = search_player(input_name)
-            add_team_player(player_name)
-            print '{} added to team.'.format(player_name)
-        if options == 'd':
-            available_player_list.remove(player_name)
+    input_name = raw_input('(name)Search Player. (t)show team. : ')
+    try:
+        if input_name == 't':
+            print 'My Team : {}'.format(top_players(my_team))
+            continue
+        rank, player_name, position, team, bye, player_info = search_player(input_name)
+        print 'Rank|{} Player|{} Team|{} Position|{} Bye|{}'.format(rank, player_name, position, team, bye)
+        if player_name in available_player_list:
+            print '{} available.'.format(player_name)
+            options = raw_input('(a)Add player to team. (d)delete from available.')
+            if options == 'a':
+                # new_player = search_player(input_name)
+                add_team_player(player_name)
+                print '{} added to team.'.format(player_name)
+            if options == 'd':
+                available_player_list.remove(player_name)
+            if options == 't':
+                print 'Top 5 available {}'.format(top_players(my_team))
+            continue
+        if player_name not in available_player_list:
+            print '{} is not available.'.format(player_name)
+            options = raw_input('(r)remove from team, (a)add to available. (c) continue')
+            if options == 'r':
+                remove_team_player(player_name)
+                print '{} removed from team.'.format(player_name)
+            if options == 'a':
+                available_player_list.append(player_name)
+            if options == False:
+                continue
+    except:
+        print 'no match try again'
         continue
-    if player_name not in available_player_list:
-        print '{} is not available.'.format(player_name)
-        options = raw_input('(r)remove from team, (a)add to available.')
-        if options == 'r':
-            remove_team_player(player_name)
-            print '{} removed from team.'.format(player_name)
-        if options == 'a':
-            available_player_list.append(player_name)
 else:
-    print 'My Team {}'.format(my_team)
+    print 'My Team : {}'.format(top_players(my_team))
 
 print 'Still avaliable {}'.format(available_player_list)
 
