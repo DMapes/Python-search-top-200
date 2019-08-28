@@ -62,13 +62,13 @@ def remove_team_player(player):
         error = 'error'
         # print error
 
-def top_players(players):
-    top_players_list = []
+def player_details(players):
+    player_details_list = []
     for name in players:
         rank, player_name, position, team, bye, player_info = search_player(name)
         info = '{} - {}-{}-{} Bye|{}'.format(rank, player_name, position, team, bye)
-        top_players_list.append(info)
-    return top_players_list
+        player_details_list.append(info)
+    return player_details_list
 
 # print player_info_list
 # print player_chosen
@@ -81,11 +81,11 @@ my_team = []
 input_name = True
 
 while input_name:
-    print 'Top 5 available {}'.format(top_players(available_player_list[:5]))
+    print 'Top 5 available {}'.format(player_details(available_player_list[:5]))
     input_name = raw_input('(name)Search Player. (t)show team. : ')
     try:
         if input_name == 't':
-            print 'My Team : {}'.format(top_players(my_team))
+            print 'My Team : {}'.format(player_details(my_team))
             continue
         rank, player_name, position, team, bye, player_info = search_player(input_name)
         print 'Rank|{} Player|{} Team|{} Position|{} Bye|{}'.format(rank, player_name, position, team, bye)
@@ -99,7 +99,7 @@ while input_name:
             if options == 'd':
                 available_player_list.remove(player_name)
             if options == 't':
-                print 'Top 5 available {}'.format(top_players(my_team))
+                print 'Top 5 available {}'.format(player_details(my_team))
             continue
         if player_name not in available_player_list:
             print '{} is not available.'.format(player_name)
@@ -115,7 +115,7 @@ while input_name:
         print 'no match try again'
         continue
 else:
-    print 'My Team : {}'.format(top_players(my_team))
+    print 'My Team : {}'.format(player_details(my_team))
 
 print 'Still avaliable {}'.format(available_player_list)
 
