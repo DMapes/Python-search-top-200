@@ -3,6 +3,7 @@ from Tkinter import Tk
 from tkinter.filedialog import askopenfilename
 import os
 import csv
+import datetime
 
 Tk().withdraw()
 file = askopenfilename()
@@ -153,24 +154,21 @@ else:
 
 print 'Still available {}'.format(available_player_list)
 
-# path = os.path.expandvars('{0}\{1}.csv'.format(new_folder,schedule_name))
-# csvfile = open(path, 'w')
-# spamwriter = csv.writer(csvfile)
-# spamwriter.writerow(['Name', 'Type', 'Header'])
+today = datetime.datetime.today()
+today_formatted = today.strftime('%Y.%m.%d %I.%M%p')
 
+available_path = os.path.expandvars('Available-{}{}'.format(today_formatted,file_name))
+available_csvfile = open(available_path, 'w')
+spamwriter = csv.writer(available_csvfile)
+spamwriter.writerow(['Rk', 'Player', 'Pos', 'Team', 'Bye'])
+for item in available_player_list:
+    rank, player_name, position, team, bye, player_info = search_player(item)
+    spamwriter.writerow([rank, player_name, position, team,  bye])
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+team_path = os.path.expandvars('Team-{}{}'.format(today_formatted,file_name))
+team_csvfile = open(available_path, 'w')
+spamwriter = csv.writer(team_csvfile)
+spamwriter.writerow(['Rk', 'Player', 'Pos', 'Team', 'Bye'])
+for item in my_team:
+    rank, player_name, position, team, bye, player_info = search_player(item)
+    spamwriter.writerow([rank, player_name, position, team,  bye])
