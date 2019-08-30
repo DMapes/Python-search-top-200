@@ -5,10 +5,15 @@ import os
 import csv
 import datetime
 
+today = datetime.datetime.today()
+today_formatted = today.strftime('%Y.%m.%d')
+# today_formatted = today.strftime('%Y.%m.%d %I.%M%p')
+
 Tk().withdraw()
 file = askopenfilename()
 
 file_name = os.path.basename(file)
+file_path = os.path.dirname(file)
 
 available_player_list = []
 player_info_list = []
@@ -80,10 +85,32 @@ def position_details(pos, players):
             position_details_list.append(info)
     return position_details_list[:5]
 
-# print player_info_list
-# print player_chosen
+def backup_folder():
+    location = os.path.expandvars('{}/{} Draft'.format(file_path, today_formatted))
+    try:
+        os.mkdir(location)
+    except:
+        error = 'File already exists'
+    return location
 
-# add, remove, new, close = raw_input('add, remove, new, close').split()
+def available_csv():
+    available_path = os.path.join('{}/Available-{}'.format(new_backup_folder,file_name))
+    with open(available_path, 'wb') as available_csvfile:
+        spamwriter = csv.writer(available_csvfile)
+        spamwriter.writerow(['Rk', 'Player', 'Pos', 'Team', 'Bye'])
+        for item in available_player_list:
+            rank, player_name, position, team, bye, player_info = search_player(item)
+            spamwriter.writerow([rank, player_name, position, team, bye])
+
+def team_csv():
+    team_path = os.path.join('{}/Team-{}'.format(new_backup_folder,file_name))
+    with open(team_path, 'wb') as team_csvfile:
+        spamwriter = csv.writer(team_csvfile)
+        spamwriter.writerow(['Rk', 'Player', 'Pos', 'Team', 'Bye'])
+        for item in my_team:
+            rank, player_name, position, team, bye, player_info = search_player(item)
+            spamwriter.writerow([rank, player_name, position, team, bye])
+
 print 'Top 200 Players: {}'.format(available_player_list)
 
 my_team = []
@@ -154,21 +181,6 @@ else:
 
 print 'Still available {}'.format(available_player_list)
 
-today = datetime.datetime.today()
-today_formatted = today.strftime('%Y.%m.%d %I.%M%p')
-
-available_path = os.path.expandvars('Available-{}{}'.format(today_formatted,file_name))
-available_csvfile = open(available_path, 'w')
-spamwriter = csv.writer(available_csvfile)
-spamwriter.writerow(['Rk', 'Player', 'Pos', 'Team', 'Bye'])
-for item in available_player_list:
-    rank, player_name, position, team, bye, player_info = search_player(item)
-    spamwriter.writerow([rank, player_name, position, team,  bye])
-
-team_path = os.path.expandvars('Team-{}{}'.format(today_formatted,file_name))
-team_csvfile = open(available_path, 'w')
-spamwriter = csv.writer(team_csvfile)
-spamwriter.writerow(['Rk', 'Player', 'Pos', 'Team', 'Bye'])
-for item in my_team:
-    rank, player_name, position, team, bye, player_info = search_player(item)
-    spamwriter.writerow([rank, player_name, position, team,  bye])
+new_backup_folder = backup_folder()
+team_csv()
+available_csv()
