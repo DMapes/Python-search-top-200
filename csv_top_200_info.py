@@ -17,6 +17,7 @@ file_path = os.path.dirname(file)
 
 available_player_list = []
 player_info_list = []
+my_team = []
 
 with open(file, 'r') as transactions:
     csv_reader = csv.DictReader(transactions)
@@ -68,9 +69,9 @@ def remove_team_player(player):
         error = 'error'
         # print error
 
-def player_details(players):
+def player_details(list):
     player_details_list = []
-    for name in players:
+    for name in list:
         rank, player_name, position, team, bye, player_info = search_player(name)
         info = '{} - {}-{}-{} Bye|{}'.format(rank, player_name, position, team, bye)
         player_details_list.append(info)
@@ -93,15 +94,6 @@ def backup_folder():
         error = 'File already exists'
     return location
 
-def available_csv():
-    available_path = os.path.join('{}/Available-{}'.format(new_backup_folder,file_name))
-    with open(available_path, 'wb') as available_csvfile:
-        spamwriter = csv.writer(available_csvfile)
-        spamwriter.writerow(['Rk', 'Player', 'Pos', 'Team', 'Bye'])
-        for item in available_player_list:
-            rank, player_name, position, team, bye, player_info = search_player(item)
-            spamwriter.writerow([rank, player_name, position, team, bye])
-
 def team_csv():
     team_path = os.path.join('{}/Team-{}'.format(new_backup_folder,file_name))
     with open(team_path, 'wb') as team_csvfile:
@@ -111,9 +103,17 @@ def team_csv():
             rank, player_name, position, team, bye, player_info = search_player(item)
             spamwriter.writerow([rank, player_name, position, team, bye])
 
-print 'Top 200 Players: {}'.format(available_player_list)
+def load_team():
+    load_list = []
+    team_file = askopenfilename()
+    with open(team_file, 'r') as team_names:
+        csv_reader = csv.DictReader(team_names)
+        for item in csv_reader:
+            load_list.append(item['Player'])
+        return load_list
 
-my_team = []
+print 'Top 200 Players: {}'.format(available_player_list)
+# print 'My Team : {}'.format(player_details(my_team))
 
 input_name = True
 
@@ -123,64 +123,85 @@ while input_name:
     try:
         if input_name == 'o':
             print '(5)Top 5 Available. (t)Show team. (qb)Top 5 QB. (rb)Top 5 RB. (wr)Top 5 WR. (te)Top 5 TE. \
-            (d)Top 5 DEF. (k) top 5 K.'
+            (5)Top 5 DEF. (k) top 5 K. (i)Import Team (all)All Available Players.'
             continue
-        if input_name == '5':
+        elif input_name == '5':
             print 'Top 5 available{}'.format(player_details(available_player_list[:5]))
             continue
-        if input_name == 't':
+        elif input_name == 't':
             print 'My Team : {}'.format(player_details(my_team))
             continue
-        if input_name == 'qb':
+        elif input_name == 'qb':
             print 'Top 5 QB{}'.format(position_details('QB', available_player_list))
             continue
-        if input_name == 'rb':
+        elif input_name == 'rb':
             print 'Top 5 RB{}'.format(position_details('RB', available_player_list))
             continue
-        if input_name == 'wr':
+        elif input_name == 'wr':
             print 'Top 5 WR{}'.format(position_details('WR', available_player_list))
             continue
-        if input_name == 'te':
+        elif input_name == 'te':
             print 'Top 5 TE{}'.format(position_details('TE', available_player_list))
             continue
-        if input_name == 'd':
+        elif input_name == 'd':
             print 'Top 5 DEF{}'.format(position_details('DEF', available_player_list))
             continue
-        if input_name == 'k':
+        elif input_name == 'k':
             print 'Top 5 K{}'.format(position_details('PK', available_player_list))
             continue
-        rank, player_name, position, team, bye, player_info = search_player(input_name)
-        print 'Rank|{} Player|{} Team|{} Position|{} Bye|{}'.format(rank, player_name, position, team, bye)
+        elif input_name == 'i':
+            load_list = load_team()
+            for m in load_list:
+                my_team.append(m)
+                available_player_list.remove(m)
+            print 'My Team : {}'.format(player_details(my_team))
+            continue
+        elif input_name == 'all':
+            print 'All still available {}'.format(player_details(available_player_list))
+            continue
+        elif input_name is False:
+            continue
+        else:
+            rank, player_name, position, team, bye, player_info = search_player(input_name)
+            print 'Rank|{} Player|{} Team|{} Position|{} Bye|{}'.format(rank, player_name, position, team, bye)
         if player_name in available_player_list:
             print '{} available.'.format(player_name)
             options = raw_input('(a)Add player to team. (d)delete from available.')
             if options == 'a':
-                # new_player = search_player(input_name)
                 add_team_player(player_name)
                 print '{} added to team.'.format(player_name)
+                continue
             if options == 'd':
                 available_player_list.remove(player_name)
-            if options == 't':
-                print 'Top 5 available {}'.format(player_details(my_team))
-            continue
-        if player_name not in available_player_list:
+                continue
+            if options is False:
+                continue
+        elif player_name not in available_player_list:
             print '{} is not available.'.format(player_name)
             options = raw_input('(r)remove from team, (a)add to available.')
             if options == 'r':
                 remove_team_player(player_name)
                 print '{} removed from team.'.format(player_name)
+                continue
             if options == 'a':
                 available_player_list.append(player_name)
+                continue
             if options is False:
                 continue
+        else:
+            break
     except:
         print 'no match try again'
         continue
 else:
-    print 'My Team : {}'.format(player_details(my_team))
+    stop = 'Stopping...'
+    print stop
 
-print 'Still available {}'.format(available_player_list)
+print 'My Team : {}'.format(player_details(my_team))
+print 'Still available {}'.format(player_details(available_player_list))
 
-new_backup_folder = backup_folder()
-team_csv()
-available_csv()
+input_backup = raw_input('(c)Create Backup Files?')
+if input_backup == 'c':
+    new_backup_folder = backup_folder()
+    if len(my_team) > 0:
+        team_csv()
