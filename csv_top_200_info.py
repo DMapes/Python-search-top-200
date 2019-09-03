@@ -16,6 +16,7 @@ file_name = os.path.basename(file)
 file_path = os.path.dirname(file)
 
 available_player_list = []
+drafted_players = []
 player_info_list = []
 my_team = []
 
@@ -65,6 +66,7 @@ def remove_team_player(player):
         # print error
     try:
         available_player_list.append(player)
+        drafted_players.append(player)
     except:
         error = 'error'
         # print error
@@ -100,6 +102,15 @@ def team_csv():
         spamwriter = csv.writer(team_csvfile)
         spamwriter.writerow(['Rk', 'Player', 'Pos', 'Team', 'Bye'])
         for item in my_team:
+            rank, player_name, position, team, bye, player_info = search_player(item)
+            spamwriter.writerow([rank, player_name, position, team, bye])
+
+def drafted_csv():
+    drafted_path = os.path.join('{}/Drafted-{}'.format(new_backup_folder,file_name))
+    with open(drafted_path, 'wb') as team_csvfile:
+        spamwriter = csv.writer(team_csvfile)
+        spamwriter.writerow(['Rk', 'Player', 'Pos', 'Team', 'Bye'])
+        for item in drafted_players:
             rank, player_name, position, team, bye, player_info = search_player(item)
             spamwriter.writerow([rank, player_name, position, team, bye])
 
@@ -154,6 +165,9 @@ while input_name:
             for m in load_list:
                 my_team.append(m)
                 available_player_list.remove(m)
+            # for m in load_list:
+            #     my_team.append(m)
+            #     available_player_list.remove(m)
             print 'My Team : {}'.format(player_details(my_team))
             continue
         elif input_name == 'all':
@@ -205,3 +219,5 @@ if input_backup == 'c':
     new_backup_folder = backup_folder()
     if len(my_team) > 0:
         team_csv()
+    # if len(drafted_players) > 0:
+    #     drafted_csv()
