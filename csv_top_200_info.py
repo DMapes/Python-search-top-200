@@ -161,13 +161,14 @@ while input_name:
             print 'Top 5 K{}'.format(position_details('PK', available_player_list))
             continue
         elif input_name == 'i':
-            load_list = load_team()
-            for m in load_list:
+            team_list = load_team()
+            for m in team_list:
                 my_team.append(m)
                 available_player_list.remove(m)
-            # for m in load_list:
-            #     my_team.append(m)
-            #     available_player_list.remove(m)
+            drafted_list = load_team()
+            for d in drafted_list:
+                drafted_players.append(m)
+                available_player_list.remove(d)
             print 'My Team : {}'.format(player_details(my_team))
             continue
         elif input_name == 'all':
@@ -187,6 +188,7 @@ while input_name:
                 continue
             if options == 'd':
                 available_player_list.remove(player_name)
+                drafted_players.append(player_name)
                 continue
             if options is False:
                 continue
@@ -199,6 +201,7 @@ while input_name:
                 continue
             if options == 'a':
                 available_player_list.append(player_name)
+                drafted_players.remove(player_name)
                 continue
             if options is False:
                 continue
@@ -219,5 +222,5 @@ if input_backup == 'c':
     new_backup_folder = backup_folder()
     if len(my_team) > 0:
         team_csv()
-    # if len(drafted_players) > 0:
-    #     drafted_csv()
+    if len(drafted_players) > 0:
+        drafted_csv()
