@@ -1,5 +1,5 @@
 '''top 200 csv reader for drafting'''
-from Tkinter import Tk
+from tkinter import Tk
 from tkinter.filedialog import askopenfilename
 import os
 import csv
@@ -98,7 +98,7 @@ def backup_folder():
 
 def team_csv():
     team_path = os.path.join('{}/Team-{}'.format(new_backup_folder,file_name))
-    with open(team_path, 'wb') as team_csvfile:
+    with open(team_path, 'w') as team_csvfile:
         spamwriter = csv.writer(team_csvfile)
         spamwriter.writerow(['Rk', 'Player', 'Pos', 'Team', 'Bye'])
         for item in my_team:
@@ -107,7 +107,7 @@ def team_csv():
 
 def drafted_csv():
     drafted_path = os.path.join('{}/Drafted-{}'.format(new_backup_folder,file_name))
-    with open(drafted_path, 'wb') as team_csvfile:
+    with open(drafted_path, 'w') as team_csvfile:
         spamwriter = csv.writer(team_csvfile)
         spamwriter.writerow(['Rk', 'Player', 'Pos', 'Team', 'Bye'])
         for item in drafted_players:
@@ -123,44 +123,45 @@ def load_team():
             load_list.append(item['Player'])
         return load_list
 
-print 'Top 200 Players: {}'.format(available_player_list)
+print ('Top 200 Players: {}'.format(available_player_list))
 # print 'My Team : {}'.format(player_details(my_team))
 
 input_name = True
 
 while input_name:
     # print 'Top 5 available{}'.format(player_details(available_player_list[:5]))
-    input_name = raw_input('Search: ')
+    input_name = input('Search: ')
     try:
         if input_name == 'o':
-            print '(5)Top 5 Available. (t)Show team. (qb)Top 5 QB. (rb)Top 5 RB. (wr)Top 5 WR. (te)Top 5 TE. \
-            (5)Top 5 DEF. (k) top 5 K. (i)Import Team (all)All Available Players.'
+            print ('(5)Top 5 Available. (t)Show team. (qb)Top 5 QB. (rb)Top 5 RB. (wr)Top 5 WR. (te)Top 5 TE.\
+            (5)Top 5 DEF. (k) top 5 K. (i)Import Team (all)All Available Players.')
             continue
         elif input_name == '5':
-            print 'Top 5 available{}'.format(player_details(available_player_list[:5]))
+            print ('Top 5 available{}'.format(player_details(available_player_list[:5])))
             continue
         elif input_name == 't':
-            print 'My Team : {}'.format(player_details(my_team))
+            print ('My Team : {}'.format(player_details(my_team)))
             continue
         elif input_name == 'qb':
-            print 'Top 5 QB{}'.format(position_details('QB', available_player_list))
+            print ('Top 5 QB{}'.format(position_details('QB', available_player_list)))
             continue
         elif input_name == 'rb':
-            print 'Top 5 RB{}'.format(position_details('RB', available_player_list))
+            print ('Top 5 RB{}'.format(position_details('RB', available_player_list)))
             continue
         elif input_name == 'wr':
-            print 'Top 5 WR{}'.format(position_details('WR', available_player_list))
+            print ('Top 5 WR{}'.format(position_details('WR', available_player_list)))
             continue
         elif input_name == 'te':
-            print 'Top 5 TE{}'.format(position_details('TE', available_player_list))
+            print ('Top 5 TE{}'.format(position_details('TE', available_player_list)))
             continue
         elif input_name == 'd':
-            print 'Top 5 DEF{}'.format(position_details('DEF', available_player_list))
+            print ('Top 5 DEF{}'.format(position_details('DEF', available_player_list)))
             continue
         elif input_name == 'k':
-            print 'Top 5 K{}'.format(position_details('PK', available_player_list))
+            print ('Top 5 K{}'.format(position_details('PK', available_player_list)))
             continue
         elif input_name == 'i':
+            print ('Choose team file first then drafted list file')
             team_list = load_team()
             for m in team_list:
                 my_team.append(m)
@@ -169,22 +170,22 @@ while input_name:
             for d in drafted_list:
                 drafted_players.append(m)
                 available_player_list.remove(d)
-            print 'My Team : {}'.format(player_details(my_team))
+            print ('My Team : {}'.format(player_details(my_team)))
             continue
         elif input_name == 'all':
-            print 'All still available {}'.format(player_details(available_player_list))
+            print ('All still available {}'.format(player_details(available_player_list)))
             continue
         elif input_name is False:
             continue
         else:
             rank, player_name, position, team, bye, player_info = search_player(input_name)
-            print 'Rank|{} Player|{} Team|{} Position|{} Bye|{}'.format(rank, player_name, position, team, bye)
+            print ('Rank|{} Player|{} Team|{} Position|{} Bye|{}'.format(rank, player_name, position, team, bye))
         if player_name in available_player_list:
-            print '{} available.'.format(player_name)
-            options = raw_input('(a)Add player to team. (d)delete from available.')
+            print ('{} available.'.format(player_name))
+            options = input('(a)Add player to team. (d)delete from available.')
             if options == 'a':
                 add_team_player(player_name)
-                print '{} added to team.'.format(player_name)
+                print ('{} added to team.'.format(player_name))
                 continue
             if options == 'd':
                 available_player_list.remove(player_name)
@@ -193,11 +194,11 @@ while input_name:
             if options is False:
                 continue
         elif player_name not in available_player_list:
-            print '{} is not available.'.format(player_name)
-            options = raw_input('(r)remove from team, (a)add to available.')
+            print ('{} is not available.'.format(player_name))
+            options = input('(r)remove from team, (a)add to available.')
             if options == 'r':
                 remove_team_player(player_name)
-                print '{} removed from team.'.format(player_name)
+                print ('{} removed from team.'.format(player_name))
                 continue
             if options == 'a':
                 available_player_list.append(player_name)
@@ -208,16 +209,16 @@ while input_name:
         else:
             break
     except:
-        print 'no match try again'
+        print ('no match try again')
         continue
 else:
     stop = 'Stopping...'
-    print stop
+    print (stop)
 
-print 'My Team : {}'.format(player_details(my_team))
-print 'Still available {}'.format(player_details(available_player_list))
+print ('My Team : {}'.format(player_details(my_team)))
+print ('Still available {}'.format(player_details(available_player_list)))
 
-input_backup = raw_input('(c)Create Backup Files?')
+input_backup = input('(c)Create Backup Files?')
 if input_backup == 'c':
     new_backup_folder = backup_folder()
     if len(my_team) > 0:
