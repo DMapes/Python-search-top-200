@@ -123,100 +123,102 @@ def load_team():
             load_list.append(item['Player'])
         return load_list
 
+def player_available_options(player_name):
+    print ('{} available.'.format(player_name))
+    options = input('(a)Add player to team. (d)delete from available.')
+    if options == 'a':
+        add_team_player(player_name)
+        print ('{} added to team.'.format(player_name))
+    if options == 'd':
+        available_player_list.remove(player_name)
+        drafted_players.append(player_name)
+    if options is False:
+        input_name = True
+        
+
+def player_unavaiable_options(player_name):
+    if player_name in my_team:
+        print ('{} is on your Team.'.format(player_name))
+        options = input('(r)remove from team')
+    else:
+        print ('{} is not available.'.format(player_name))
+        options = input('(a)add to available')
+    if options == 'r':
+        remove_team_player(player_name)
+        print ('{} removed from team.'.format(player_name))
+    if options == 'a':
+        available_player_list.append(player_name)
+        drafted_players.remove(player_name)
+    if options is False:
+        input_name = True
+
 print ('Top 200 Players: {}'.format(available_player_list))
-# print 'My Team : {}'.format(player_details(my_team))
 
 input_name = True
 
 while input_name:
-    # print 'Top 5 available{}'.format(player_details(available_player_list[:5]))
     input_name = input('Search: ')
-    try:
-        if input_name == 'o':
-            print ('(5)Top 5 Available. (t)Show team. (qb)Top 5 QB. (rb)Top 5 RB. (wr)Top 5 WR. (te)Top 5 TE.\
-            (5)Top 5 DEF. (k) top 5 K. (i)Import Team (all)All Available Players.')
-            continue
-        elif input_name == '5':
-            print ('Top 5 available{}'.format(player_details(available_player_list[:5])))
-            continue
-        elif input_name == 't':
-            print ('My Team : {}'.format(player_details(my_team)))
-            continue
-        elif input_name == 'qb':
-            print ('Top 5 QB{}'.format(position_details('QB', available_player_list)))
-            continue
-        elif input_name == 'rb':
-            print ('Top 5 RB{}'.format(position_details('RB', available_player_list)))
-            continue
-        elif input_name == 'wr':
-            print ('Top 5 WR{}'.format(position_details('WR', available_player_list)))
-            continue
-        elif input_name == 'te':
-            print ('Top 5 TE{}'.format(position_details('TE', available_player_list)))
-            continue
-        elif input_name == 'd':
-            print ('Top 5 DEF{}'.format(position_details('DEF', available_player_list)))
-            continue
-        elif input_name == 'k':
-            print ('Top 5 K{}'.format(position_details('PK', available_player_list)))
-            continue
-        elif input_name == 'i':
-            print ('Choose team file first then drafted list file')
-            team_list = load_team()
-            for m in team_list:
-                my_team.append(m)
-                available_player_list.remove(m)
-            drafted_list = load_team()
-            for d in drafted_list:
-                drafted_players.append(m)
-                available_player_list.remove(d)
-            print ('My Team : {}'.format(player_details(my_team)))
-            continue
-        elif input_name == 'all':
-            print ('All still available {}'.format(player_details(available_player_list)))
-            continue
-        elif input_name is False:
-            continue
-        else:
-            rank, player_name, position, team, bye, player_info = search_player(input_name)
-            print ('Rank|{} Player|{} Team|{} Position|{} Bye|{}'.format(rank, player_name, position, team, bye))
-        if player_name in available_player_list:
-            print ('{} available.'.format(player_name))
-            options = input('(a)Add player to team. (d)delete from available.')
-            if options == 'a':
-                add_team_player(player_name)
-                print ('{} added to team.'.format(player_name))
-                continue
-            if options == 'd':
-                available_player_list.remove(player_name)
-                drafted_players.append(player_name)
-                continue
-            if options is False:
-                continue
-        elif player_name not in available_player_list:
-            print ('{} is not available.'.format(player_name))
-            options = input('(r)remove from team, (a)add to available.')
-            if options == 'r':
-                remove_team_player(player_name)
-                print ('{} removed from team.'.format(player_name))
-                continue
-            if options == 'a':
-                available_player_list.append(player_name)
-                drafted_players.remove(player_name)
-                continue
-            if options is False:
-                continue
-        else:
-            break
-    except:
-        print ('no match try again')
+    if input_name == 'o':
+        print ('(5)Top 5 Available. (t)Show team. (qb)Top 5 QB. (rb)Top 5 RB. (wr)Top 5 WR. (te)Top 5 TE. (d)Top 5 DEF. (k) top 5 K. (i)Import Team (all)All Available Players.')
         continue
+    elif input_name == '1':
+        player_name = ' '.join([str(elem) for elem in available_player_list[:1]]) 
+        player_available_options(player_name)
+    elif input_name == '5':
+        print ('Top 5 available{}'.format(player_details(available_player_list[:5])))
+        continue
+    elif input_name == 't':
+        print ('My Team : {}'.format(player_details(my_team)))
+        continue
+    elif input_name == 'qb':
+        print ('Top 5 QB{}'.format(position_details('QB', available_player_list)))
+        continue
+    elif input_name == 'rb':
+        print ('Top 5 RB{}'.format(position_details('RB', available_player_list)))
+        continue
+    elif input_name == 'wr':
+        print ('Top 5 WR{}'.format(position_details('WR', available_player_list)))
+        continue
+    elif input_name == 'te':
+        print ('Top 5 TE{}'.format(position_details('TE', available_player_list)))
+        continue
+    elif input_name == 'd':
+        print ('Top 5 DEF{}'.format(position_details('DEF', available_player_list)))
+        continue
+    elif input_name == 'k':
+        print ('Top 5 K{}'.format(position_details('PK', available_player_list)))
+        continue
+    elif input_name == 'i':
+        print ('Choose team file first then drafted list file')
+        team_list = load_team()
+        for m in team_list:
+            my_team.append(m)
+            available_player_list.remove(m)
+        drafted_list = load_team()
+        for d in drafted_list:
+            drafted_players.append(m)
+            available_player_list.remove(d)
+        print ('My Team : {}'.format(player_details(my_team)))
+        continue
+    elif input_name == 'all':
+        print ('All still available {}'.format(player_details(available_player_list)))
+        continue
+    try:
+        rank, player_name, position, team, bye, player_info = search_player(input_name)
+        print ('Rank|{} Player|{} Team|{} Position|{} Bye|{}'.format(rank, player_name, position, team, bye))
+        if player_name in available_player_list:
+            player_available_options(player_name)
+        elif player_name not in available_player_list:
+            player_unavaiable_options(player_name)
+    except:
+        # print ('Search Again')
+        input_name = True
 else:
     stop = 'Stopping...'
     print (stop)
 
 print ('My Team : {}'.format(player_details(my_team)))
-print ('Still available {}'.format(player_details(available_player_list)))
+# print ('Still available {}'.format(player_details(available_player_list)))
 
 input_backup = input('(c)Create Backup Files?')
 if input_backup == 'c':
@@ -225,3 +227,4 @@ if input_backup == 'c':
         team_csv()
     if len(drafted_players) > 0:
         drafted_csv()
+    print(f'Files created at {new_backup_folder}')
