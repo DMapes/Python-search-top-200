@@ -203,6 +203,9 @@ while input_name:
     elif input_name == 'all':
         print ('All still available {}'.format(player_details(available_player_list)))
         continue
+    elif input_name == '':
+        print ('Blank Search Closing....')
+        break
     try:
         rank, player_name, position, team, bye, player_info = search_player(input_name)
         print ('Rank|{} Player|{} Team|{} Position|{} Bye|{}'.format(rank, player_name, position, team, bye))
