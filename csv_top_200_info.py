@@ -159,7 +159,7 @@ input_name = True
 while input_name:
     input_name = input('Search: ')
     if input_name == 'o':
-        print ('(5)Top 5 Available. (t)Show team. (qb)Top 5 QB. (rb)Top 5 RB. (wr)Top 5 WR. (te)Top 5 TE. (d)Top 5 DEF. (k) top 5 K. (i)Import Team (all)All Available Players.')
+        print (' (5)Top 5 Available.\n (draft)Show drafted.\n (t)Show team.\n (qb)Top 5 QB.\n (rb)Top 5 RB.\n (wr)Top 5 WR.\n (te)Top 5 TE.\n (d)Top 5 DEF.\n (k)Top 5 K.\n (i)Import Team\n (all)All Available Players.\n (c)Create backup')
         continue
     elif input_name == '1':
         player_name = ' '.join([str(elem) for elem in available_player_list[:1]]) 
@@ -169,6 +169,9 @@ while input_name:
         continue
     elif input_name == 't':
         print ('My Team : {}'.format(player_details(my_team)))
+        continue
+    elif input_name == 'draft':
+        print ('Drafted Players : {}'.format(player_details(drafted_players)))
         continue
     elif input_name == 'qb':
         print ('Top 5 QB{}'.format(position_details('QB', available_player_list)))
@@ -203,6 +206,13 @@ while input_name:
     elif input_name == 'all':
         print ('All still available {}'.format(player_details(available_player_list)))
         continue
+    elif input_name == 'c':
+        new_backup_folder = backup_folder()
+        if len(my_team) > 0:
+            team_csv()
+        if len(drafted_players) > 0:
+            drafted_csv()
+        print(f'Files created at {new_backup_folder}')
     elif input_name == '':
         print ('Blank Search Closing....')
         break
