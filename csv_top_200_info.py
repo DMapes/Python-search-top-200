@@ -14,6 +14,7 @@ file = askopenfilename()
 
 file_name = os.path.basename(file)
 file_path = os.path.dirname(file)
+user_path = os.path.expandvars('%userprofile%\Desktop')
 
 available_player_list = []
 drafted_players = []
@@ -89,7 +90,8 @@ def position_details(pos, players):
     return position_details_list[:5]
 
 def backup_folder():
-    location = os.path.expandvars('{}/{} Draft'.format(file_path, today_formatted))
+    # location = os.path.expandvars('{}/{} Draft'.format(file_path, today_formatted))
+    location = os.path.expandvars('{}/{} Draft'.format(user_path, today_formatted))
     try:
         os.mkdir(location)
     except:
