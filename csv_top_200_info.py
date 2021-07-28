@@ -158,8 +158,8 @@ input_name = True
 
 while input_name:
     input_name = input('Search: ')
-    if input_name == 'o':
-        print (' (5)Top 5 Available.\n (draft)Show drafted.\n (t)Show team.\n (qb)Top 5 QB.\n (rb)Top 5 RB.\n (wr)Top 5 WR.\n (te)Top 5 TE.\n (d)Top 5 DEF.\n (k)Top 5 K.\n (i)Import Team\n (all)All Available Players.\n (c)Create backup')
+    if input_name == 'help':
+        print (' (5)Top 5 Available.\n (draft)Show drafted.\n (t)Show team.\n (qb)Top 5 QB.\n (rb)Top 5 RB.\n (wr)Top 5 WR.\n (te)Top 5 TE.\n (d)Top 5 DEF.\n (k)Top 5 K.\n (i)Import Team\n (all)All Available Players.\n (c)Create backup\n (close)Close')
         continue
     elif input_name == '1':
         player_name = ' '.join([str(elem) for elem in available_player_list[:1]]) 
@@ -199,7 +199,7 @@ while input_name:
             available_player_list.remove(m)
         drafted_list = load_team()
         for d in drafted_list:
-            drafted_players.append(m)
+            drafted_players.append(d)
             available_player_list.remove(d)
         print ('My Team : {}'.format(player_details(my_team)))
         continue
@@ -213,8 +213,17 @@ while input_name:
         if len(drafted_players) > 0:
             drafted_csv()
         print(f'Files created at {new_backup_folder}')
+        input_name = True
     elif input_name == '':
-        print ('Blank Search Closing....')
+        print (' (5)Top 5 Available.\n (draft)Show drafted.\n (t)Show team.\n (qb)Top 5 QB.\n (rb)Top 5 RB.\n (wr)Top 5 WR.\n (te)Top 5 TE.\n (d)Top 5 DEF.\n (k)Top 5 K.\n (i)Import Team\n (all)All Available Players.\n (c)Create backup\n (close)Close')
+        # print ('Blank Search Closing....')
+        # input_name = input('To continue choose an option.')
+        input_name = True
+        # break
+
+    elif input_name == 'close':
+        print ('closing now...')
+        input_name = False
         break
     try:
         rank, player_name, position, team, bye, player_info = search_player(input_name)
@@ -233,8 +242,8 @@ else:
 print ('My Team : {}'.format(player_details(my_team)))
 # print ('Still available {}'.format(player_details(available_player_list)))
 
-input_backup = input('(c)Create Backup Files?')
-if input_backup == 'c':
+input_backup = input('Create Backup Files? (y/n)')
+if input_backup == 'y':
     new_backup_folder = backup_folder()
     if len(my_team) > 0:
         team_csv()
