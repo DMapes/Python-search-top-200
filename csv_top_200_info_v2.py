@@ -24,10 +24,12 @@ my_team = []
 
 with open(file, 'r') as transactions:
     csv_reader = csv.DictReader(transactions)
+    print (csv_reader)
     for item in csv_reader:
-        rank = item['Rk']
-        player = item['Player']
-        position = item['Pos']
+        print(item)
+        rank = item['Overall']
+        player = item['Name']
+        position = item['Position']
         team = item['Team']
         bye = item['Bye']
         player_info = 'Rank|{} Player|{} Team|{} Position|{} Bye|{}'.format(rank, player, position, team, bye)
@@ -38,11 +40,11 @@ def search_player(name):
     with open(file, 'r') as transactions:
         csv_reader = csv.DictReader(transactions)
         for item in csv_reader:
-            player_name = item['Player']
+            player_name = item['Name']
             if name in player_name:
-                rank = item['Rk']
-                player_name = item['Player']
-                position = item['Pos']
+                rank = item['Overall']
+                player_name = item['Name']
+                position = item['Position']
                 team = item['Team']
                 bye = item['Bye']
                 player_info = 'Rank|{} Player|{} Team|{} Position|{} Bye|{}'.format(rank, player, position, team, bye)
